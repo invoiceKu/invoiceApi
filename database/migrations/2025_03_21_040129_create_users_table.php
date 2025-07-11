@@ -13,20 +13,28 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name');
+            $table->string('no_hp');
+            $table->string('username');
             $table->string('email')->unique();
             $table->string('password');
-            $table->string('api_token')->nullable();
             $table->timestamp('created_at')->nullable();
             $table->timestamp('updated_at')->nullable();
-            $table->string('no_hp');
-            $table->string('alamat')->nullable();
-            $table->string('usia');
+            $table->timestamp('expired_user')->nullable()->default(null);
+            $table->string('api_token')->nullable();
+            $table->timestamp('expired_token')->nullable()->default(null);
+            $table->integer('type_account');
+            $table->integer('type_user');
             $table->string('foto_profil')->nullable();
+            $table->string('type_login')->nullable();
             $table->string('versi');
-            $table->string('status_daftar');
+            $table->double('saldo');
+            $table->double('saldo_referral');
+            $table->double('storage_size');
+            $table->string('status_hp');
             $table->string('device_name');
+            $table->string('device_type');
             $table->string('os_version');
+            $table->timestamp('delete_at')->nullable()->default(null);
         });
     }
 

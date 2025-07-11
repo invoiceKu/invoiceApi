@@ -2,51 +2,72 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
+// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
-use Tymon\JWTAuth\Contracts\JWTSubject; // Import JWTSubject
+use Tymon\JWTAuth\Contracts\JWTSubject; 
 
-class User extends Authenticatable implements JWTSubject
+class User extends Authenticatable implements JWTSubject 
 {
     use HasApiTokens, HasFactory, Notifiable;
 
-    protected $table = 'users';
-
-    public $timestamp = true;
-
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    // highlight-start
     protected $fillable = [
-        'name',
+        'username',
         'email',
         'password',
         'no_hp',
-        'alamat',
-        'usia',
-        'versi',
-        'status_daftar',
+        'type_account',
+        'type_user',
         'foto_profil',
+        'versi',
+        'saldo',
+        'saldo_referral',
+        'storage_size',
+        'status_hp',
         'device_name',
+        'device_type',
         'os_version',
+        'api_token',
+    ];
+    // highlight-end
+
+    /**
+     * The attributes that should be hidden for serialization.
+     *
+     * @var array<int, string>
+     */
+    protected $hidden = [
+        'password',
+        'remember_token',
     ];
 
-    protected $guarded = [];
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array<string, string>
+     */
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+        'password' => 'hashed',
+    ];
 
-    // Mengimplementasikan metode yang diwajibkan oleh JWTSubject
+
     public function getJWTIdentifier()
     {
-        return $this->getKey(); // Mengembalikan ID registrasi sebagai identifier
+        return $this->getKey();
     }
 
     public function getJWTCustomClaims()
     {
-        return []; // Kamu bisa menambahkan klaim kustom jika diperlukan
+        return [];
     }
-
-    // Fungsi untuk memastikan email disimpan dalam huruf kecil
-    public function setEmailAttribute($value)
-    {
-        $this->attributes['email'] = strtolower($value);
-    }
+   
 }
